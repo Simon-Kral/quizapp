@@ -56,36 +56,113 @@ let questions = [{
     },
 ];
 
+
 let currentQuestion = 0;
+let correctAnswers = 0;
+let sfxSuccess = new Audio('sfx/success.mp3');
+let sfxWrong = new Audio('sfx/wrong.mp3');
 
 
 function init() {
     document.getElementById('numberOfQuestions').innerHTML = questions.length;
+    document.getElementById('totalQuestions').innerHTML = questions.length;
     showCurrentQuestion();
 }
 
 
 function showCurrentQuestion() {
+    if (gameIsOver()) {
+        showEndscreen();
+    } else {
+        updateProgressBar()
+        showNextQuestion()
+    }
+}
+
+
+function answer(selection) {
+
     let question = questions[currentQuestion];
+    let selectedAnswer = selection.slice(-1);
+    let idOfRightAnswer = `answer_${question.right_answer}`;
+
+    if (correctAnswerSelected(question, selectedAnswer)) {
+        document.getElementById(selection).parentNode.classList.add('bg-success');
+        correctAnswers++;
+        sfxSuccess.play();
+    } else {
+        document.getElementById(selection).parentNode.classList.add('bg-danger');
+        document.getElementById(idOfRightAnswer).parentNode.classList.add('bg-success');
+        sfxWrong.play();
+    }
+    document.getElementById('nextButton').disabled = false;
+}
+
+
+function nextQuestion() {
+    currentQuestion++;
+    document.getElementById('nextButton').disabled = true;
+    resetAnswerButtons();
+    showCurrentQuestion();
+}
+
+
+function resetAnswerButtons() {
+    document.getElementById('answer_1').parentNode.classList.remove('bg-danger')
+    document.getElementById('answer_1').parentNode.classList.remove('bg-success')
+    document.getElementById('answer_2').parentNode.classList.remove('bg-danger')
+    document.getElementById('answer_2').parentNode.classList.remove('bg-success')
+    document.getElementById('answer_3').parentNode.classList.remove('bg-danger')
+    document.getElementById('answer_3').parentNode.classList.remove('bg-success')
+    document.getElementById('answer_4').parentNode.classList.remove('bg-danger')
+    document.getElementById('answer_4').parentNode.classList.remove('bg-success')
+
+}
+
+
+function replay() {
+    currentQuestion = 0;
+    correctAnswers = 0;
+    document.getElementById('endScreen').style = 'display: none;';
+    document.getElementById('questionBody').style = '';
+    document.getElementById('headImage').src = "img/pencil.jpg";
+    init();
+}
+
+
+function showNextQuestion() {
+    let question = questions[currentQuestion];
+    document.getElementById('currentQuestion').innerHTML = currentQuestion + 1;
     document.getElementById('question').innerHTML = question.question;
     document.getElementById('answer_1').innerHTML = question.answer_1;
     document.getElementById('answer_2').innerHTML = question.answer_2;
     document.getElementById('answer_3').innerHTML = question.answer_3;
     document.getElementById('answer_4').innerHTML = question.answer_4;
-
 }
 
 
-function answer(selection) {
-    let question = questions[currentQuestion];
-    let selectedAnswer = selection.slice(-1);
-    let idOfRightAnswer = `answer_${question.right_answer}`;
-    if (selectedAnswer == question['right_answer']) {
-        console.log('richtige Antwort');
-        document.getElementById(selection).parentNode.classList.add('bg-success')
-    } else {
-        console.log('falsche Antwort');
-        document.getElementById(selection).parentNode.classList.add('bg-danger')
-        document.getElementById(idOfRightAnswer).parentNode.classList.add('bg-success')
-    }
+function showEndscreen() {
+    document.getElementById('correctAnswers').innerHTML = correctAnswers;
+    document.getElementById('endScreen').style = '';
+    document.getElementById('questionBody').style = 'display: none;';
+    document.getElementById('headImage').src = "img/trophy.png"
+    document.getElementById('progressBar').innerHTML = `100%`
+    document.getElementById('progressBar').style.width = `100%`;
+}
+
+
+function updateProgressBar() {
+    let percent = Math.round(currentQuestion / questions.length * 100);
+    document.getElementById('progressBar').innerHTML = `${percent}%`
+    document.getElementById('progressBar').style.width = `${percent}%`;
+}
+
+
+function gameIsOver() {
+    return currentQuestion >= questions.length;
+}
+
+
+function correctAnswerSelected(question, selectedAnswer) {
+    return selectedAnswer == question['right_answer'];
 }
