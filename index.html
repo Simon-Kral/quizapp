@@ -16,19 +16,41 @@
 
 </head>
 
-<body>
+<body onload="init()">
     <nav class="navbar bg-body-tertiary">
         <div class="container-fluid">
             <span class="navbar-brand mb-0 h1">QuizApp</span>
         </div>
     </nav>
     <div class="mainContainer">
-        <div class="card" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
+        <div class="card mainCard">
+            <img src="img/pencil.jpg" class="card-img-top" alt="background">
             <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <h5 class="card-title" id="question">Frage</h5>
+                <div class="card answerCard mb-2">
+                    <div class="card-body" id="answer_1" onclick="answer('answer_1')">
+                        Antwort
+                    </div>
+                </div>
+                <div class="card answerCard mb-2">
+                    <div class="card-body" id="answer_2" onclick="answer('answer_2')">
+                        Antwort
+                    </div>
+                </div>
+                <div class="card answerCard mb-2">
+                    <div class="card-body" id="answer_3" onclick="answer('answer_3')">
+                        Antwort
+                    </div>
+                </div>
+                <div class="card answerCard mb-2">
+                    <div class="card-body" id="answer_4" onclick="answer('answer_4')">
+                        Antwort
+                    </div>
+                </div>
+                <div class="questionFooter">
+                    <span><b>1</b> von <b id="numberOfQuestions">5</b> Fragen</span>
+                    <button class="btn btn-primary">nächste Frage</button>
+                </div>
             </div>
         </div>
     </div>

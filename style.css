@@ -5,3 +5,25 @@
     min-height: 100vh;
     background-color: grey !important;
 }
+
+.questionFooter {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid rgba(0, 0, 0, 0.4);
+    align-items: center;
+    padding-top: 12px;
+}
+
+.mainCard {
+    width: 30rem;
+}
+
+.answerCard:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.bg-success,
+.bg-danger {
+    color: white !important;
+}
